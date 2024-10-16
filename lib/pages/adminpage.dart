@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_lab1/controller/auth_service.dart';
 import 'package:flutter_lab1/controller/report_service.dart';
-import 'package:flutter_lab1/pages/addpage.dart';
 import 'package:flutter_lab1/pages/editpage.dart';
 import 'package:flutter_lab1/providers/user_providers.dart';
 import 'package:provider/provider.dart';
@@ -46,7 +45,7 @@ class _WelcomePageState extends State<WelcomePage> {
       backgroundColor: const Color.fromARGB(255, 255, 255, 255),
       appBar: AppBar(
         title: Text(
-          "Admin Page",
+          "ระบบแจ้งซ่อม - เจ้าหน้าที่ 🛠",
           style: TextStyle(color: Colors.white),
         ),
         backgroundColor: const Color.fromARGB(255, 90, 1, 255),
@@ -66,34 +65,17 @@ class _WelcomePageState extends State<WelcomePage> {
               children: [
                 SizedBox(height: 20),
                 Text(
-                  'Reports',
+                  'คำร้องแจ้งซ่อมทั้งหมด',
                   style: TextStyle(
                       fontSize: 28.0,
                       fontWeight: FontWeight.bold,
                       color: Colors.black87),
                 ),
-                const SizedBox(height: 15.0),
-                Align(
-                  alignment: Alignment.center,
-                  child: ElevatedButton.icon(
-                    onPressed: () async {
-                      final result = await Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => AddPage()),
-                      );
-                      if (result == true) {
-                        refreshReports();
-                      }
-                    },
-                    icon: Icon(Icons.add, color: Colors.white),
-                    label: Text('Add Report',
-                        style: TextStyle(color: Colors.white)),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Color.fromARGB(255, 90, 1, 255),
-                      padding: EdgeInsets.symmetric(
-                          vertical: 15.0, horizontal: 20.0),
-                    ),
-                  ),
+                Text(
+                  'กดที่ไอคอนปากกาเพื่อแก้ไขสถานะคำร้องแจ้งซ่อม',
+                  style: TextStyle(
+                      fontSize: 14.0,
+                      color: Colors.black87),
                 ),
                 const SizedBox(height: 15.0),
                 FutureBuilder<List<ReportModel>>(
@@ -106,7 +88,6 @@ class _WelcomePageState extends State<WelcomePage> {
                     } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
                       return Center(child: Text('No reports available.'));
                     }
-
                     final reports = snapshot.data!;
                     return ListView.builder(
                       shrinkWrap: true,
@@ -131,16 +112,16 @@ class _WelcomePageState extends State<WelcomePage> {
                                           fontWeight: FontWeight.bold,
                                           fontSize: 20)),
                                   SizedBox(height: 5),
-                                  Text('title: ${reports[index].title}',
+                                  Text('หัวข้อ: ${reports[index].title}',
                                       style: TextStyle(fontSize: 18)),
                                   SizedBox(height: 5),
-                                  Text('details: ${reports[index].details}',
+                                  Text('รายละเอียด: ${reports[index].details}',
                                       style: TextStyle(fontSize: 18)),
                                   SizedBox(height: 5),
-                                  Text('location: ${reports[index].location}',
+                                  Text('สถานที่: ${reports[index].location}',
                                       style: TextStyle(fontSize: 18)),
                                   SizedBox(height: 5),
-                                  Text('status: ${reports[index].status}',
+                                  Text('สถานะ: ${reports[index].status}',
                                       style: TextStyle(fontSize: 18)),
                                   SizedBox(height: 15),
                                   Row(
@@ -148,8 +129,7 @@ class _WelcomePageState extends State<WelcomePage> {
                                     children: <Widget>[
                                       IconButton(
                                         icon: Icon(Icons.edit,
-                                            color: const Color.fromARGB(
-                                                255, 238, 251, 0)),
+                                            color: const Color.fromARGB(255, 0, 0, 0)),
                                         onPressed: () {
                                           Navigator.push(
                                             context,
@@ -172,19 +152,19 @@ class _WelcomePageState extends State<WelcomePage> {
                                             context: context,
                                             builder: (BuildContext context) {
                                               return AlertDialog(
-                                                title: Text("Confirm Delete"),
+                                                title: Text("ลบคำร้องแจ้งซ่อม"),
                                                 content: Text(
-                                                    "Are you sure you want to delete this report?"),
+                                                    "การดำเนินการนี้ไม่สามารถย้อนกลับได้"),
                                                 actions: <Widget>[
                                                   TextButton(
-                                                    child: Text("Cancel"),
+                                                    child: Text("ยกเลิก"),
                                                     onPressed: () {
                                                       Navigator.of(context)
                                                           .pop(); // ปิด dialog
                                                     },
                                                   ),
                                                   TextButton(
-                                                    child: Text("Delete"),
+                                                    child: Text("ยืนยัน"),
                                                     onPressed: () async {
                                                       final isDeleted =
                                                           await ReportService()
@@ -200,7 +180,7 @@ class _WelcomePageState extends State<WelcomePage> {
                                                             .showSnackBar(
                                                           SnackBar(
                                                               content: Text(
-                                                                  'Report deleted successfully')),
+                                                                  'ลบคำร้องแจ้งซ่อมสำเร็จ')),
                                                         );
                                                       } else {
                                                         ScaffoldMessenger.of(
@@ -208,7 +188,7 @@ class _WelcomePageState extends State<WelcomePage> {
                                                             .showSnackBar(
                                                           SnackBar(
                                                               content: Text(
-                                                                  'Failed to delete report')),
+                                                                  'ลบคำร้องแจ้งซ่อมล้มเหลว')),
                                                         );
                                                       }
                                                       Navigator.of(context)

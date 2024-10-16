@@ -21,7 +21,7 @@ class AuthService {
     if (response.statusCode == 200) {
       return UserModel.fromJson(jsonDecode(response.body));
     } else {
-      throw Exception('Failed to login');
+      throw Exception('เข้าสู่ระบบล้มเหลว');
     }
   }
 
@@ -37,9 +37,9 @@ class AuthService {
         }));
     print(response.statusCode);
     if (response.statusCode == 201) {
-      print("Rsgistration Successful");
+      print("ลงทะเบียนสำเร็จ");
     } else {
-      print("Rsgistration Failed");
+      print("ลงทะเบียนผิดพลาด");
       print("Response body: ${response.body}");
     }
   }

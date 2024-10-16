@@ -13,6 +13,7 @@ class _AddPageState extends State<AddPage> {
   String? details;
   String? location;
   String? status;
+  String? selectedTopic;
 
   void addReport() async {
     if (_formKey.currentState!.validate()) {
@@ -31,7 +32,7 @@ class _AddPageState extends State<AddPage> {
         Navigator.pop(context, true);
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Failed to add report')),
+          SnackBar(content: Text('ส่งคำร้องแจ้งซ่อมไม่สำเร็จ')),
         );
         Navigator.pop(context, false);
       }
@@ -41,10 +42,13 @@ class _AddPageState extends State<AddPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color.fromARGB(255, 255, 255, 255),
       appBar: AppBar(
-        title: Text('Add Report'),
-        backgroundColor:
-            const Color.fromARGB(255, 90, 1, 255),
+        title: Text(
+          "คำร้องแจ้งซ่อม",
+          style: TextStyle(color: Colors.white),
+        ),
+        backgroundColor: const Color.fromARGB(255, 90, 1, 255),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -55,7 +59,7 @@ class _AddPageState extends State<AddPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Add a New Report',
+                  'เพิ่มคำร้องแจ้งซ่อม',
                   style: TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
@@ -63,57 +67,78 @@ class _AddPageState extends State<AddPage> {
                   ),
                 ),
                 SizedBox(height: 20),
-                TextFormField(
+                DropdownButtonFormField<String>(
+                  value: selectedTopic,
+                  hint: const Text('---โปรดเลือก---'),
                   decoration: InputDecoration(
-                    labelText: 'Title',
+                    labelText: 'หัวข้อ',
                     labelStyle: TextStyle(color: Colors.black54),
                     border: OutlineInputBorder(),
                     filled: true,
                     fillColor: const Color.fromARGB(255, 255, 255, 255),
                   ),
+                  items: [
+                    DropdownMenuItem(
+                      value: 'ไฟฟ้า',
+                      child: Text('ไฟฟ้า'),
+                    ),
+                    DropdownMenuItem(
+                      value: 'ประปา',
+                      child: Text('ประปา'),
+                    ),
+                    DropdownMenuItem(
+                      value: 'อาคาร',
+                      child: Text('อาคาร'),
+                    ),
+                  ],
+                  onChanged: (value) {
+                    setState(() {
+                      selectedTopic = value;
+                    });
+                  },
                   validator: (value) =>
-                      value!.isEmpty ? 'Please enter a product name' : null,
+                      value == null ? 'กรุณาเลือกหัวข้อ' : null,
                   onSaved: (value) => title = value,
                 ),
                 SizedBox(height: 16),
                 TextFormField(
                   decoration: InputDecoration(
-                    labelText: 'Details',
+                    labelText: 'รายละเอียด',
                     labelStyle: TextStyle(color: Colors.black54),
                     border: OutlineInputBorder(),
                     filled: true,
                     fillColor: const Color.fromARGB(255, 255, 255, 255),
                   ),
                   validator: (value) =>
-                      value!.isEmpty ? 'Please enter a product type' : null,
+                      value!.isEmpty ? 'กรุณากรอกรายละเอียด' : null,
                   onSaved: (value) => details = value,
                 ),
                 SizedBox(height: 16),
                 TextFormField(
                   decoration: InputDecoration(
-                    labelText: 'location',
+                    labelText: 'สถานที่',
                     labelStyle: TextStyle(color: Colors.black54),
                     border: OutlineInputBorder(),
                     filled: true,
                     fillColor: const Color.fromARGB(255, 255, 255, 255),
                   ),
-                  //keyboardType: TextInputType.number,
                   validator: (value) =>
-                      value!.isEmpty ? 'Please enter a price' : null,
+                      value!.isEmpty ? 'กรุณากรอกสถานที่' : null,
                   onSaved: (value) => location = value,
                 ),
                 SizedBox(height: 16),
                 TextFormField(
                   decoration: InputDecoration(
-                    labelText: 'Status',
+                    labelText: 'สถานะ',
                     labelStyle: TextStyle(color: Colors.black54),
                     border: OutlineInputBorder(),
                     filled: true,
-                    fillColor: const Color.fromARGB(255, 255, 255, 255),
+                    fillColor: Colors.grey[300],
                   ),
-                  validator: (value) =>
-                      value!.isEmpty ? 'Please enter a unit' : null,
-                  onSaved: (value) => status = value,
+                  readOnly: true, // ล็อกไม่ให้กรอกข้อมูล
+                  initialValue: 'รอดำเนินการ', // แสดงค่าตายตัว
+                  onSaved: (value) =>
+                      status = 'รอดำเนินการ', // บันทึกค่าตายตัวนี้
                 ),
                 SizedBox(height: 20),
                 Center(
@@ -128,7 +153,7 @@ class _AddPageState extends State<AddPage> {
                       ),
                     ),
                     child: Text(
-                      'Add Report',
+                      'ส่งคำร้องแจ้งซ่อม',
                       style: TextStyle(
                         fontSize: 18,
                         color: Colors.white,

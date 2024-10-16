@@ -5,6 +5,7 @@ import 'pages/login_page.dart';
 import 'package:flutter_lab1/pages/adminpage.dart';
 import 'package:flutter_lab1/pages/addpage.dart';
 import 'package:flutter_lab1/providers/user_providers.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() {
   runApp(const MyApp());
@@ -18,11 +19,11 @@ class MyApp extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (context) => UserProvider(),
       child: MaterialApp(
-        title: 'Flutter Auth Demo',
+        title: 'Flutter',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
           primarySwatch: Colors.blue,
-          scaffoldBackgroundColor: const Color.fromARGB(255, 126, 200, 246),
+          scaffoldBackgroundColor: const Color.fromARGB(255, 90, 1, 255),
           inputDecorationTheme: InputDecorationTheme(
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(8.0),
@@ -42,6 +43,15 @@ class MyApp extends StatelessWidget {
             style: TextButton.styleFrom(),
           ),
         ),
+        supportedLocales: [
+          Locale('th', ''), // ภาษาไทย
+          Locale('en', ''), // ภาษาอังกฤษ
+        ],
+        localizationsDelegates: [
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
         home: const LoginPage(),
         routes: {
           '/homeadmin': (context) => WelcomePage(),

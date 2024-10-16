@@ -24,6 +24,15 @@ class RegisterPage extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
                       const Text(
+                        '📄 ระบบแจ้งซ่อม 🛠',
+                        style: TextStyle(
+                          fontSize: 24.0,
+                          fontWeight: FontWeight.bold,
+                          color: Color.fromARGB(255, 0, 0, 0),
+                        ),
+                      ),
+                      const SizedBox(height: 16.0),
+                      const Text(
                         'ลงทะเบียนผู้ใช้ใหม่',
                         style: TextStyle(
                           fontSize: 24.0,
@@ -33,7 +42,7 @@ class RegisterPage extends StatelessWidget {
                       ),
                       const SizedBox(height: 16.0),
                       Text(
-                        'กรุณากรอกชื่อ/username/password และเลือกบทบาทในระบบของคุณ',
+                        'กรุณากรอกข้อมูลเพื่อทำการลงทะเบียน',
                         style: TextStyle(
                           fontSize: 16.0,
                           color: const Color.fromARGB(255, 0, 0, 0),
@@ -46,7 +55,12 @@ class RegisterPage extends StatelessWidget {
                         onPressed: () {
                           Navigator.pop(context);
                         },
-                        child: const Text('ย้อนกลับ'),
+                        child: const Text(
+                          'ย้อนกลับ',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                       ),
                     ],
                   ),

@@ -28,23 +28,27 @@ class _LoginFormState extends State<LoginForm> {
           final String role = userModel.user.role;
           Provider.of<UserProvider>(context, listen: false).onLogin(userModel);
 
-          if (role == 'admin') {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('เข้าสู่ระบบในตำแหน่ง$role')),
+          );
+
+          if (role == 'เจ้าหน้าที่ผู้ปฏิบัติงาน') {
             Navigator.pushReplacementNamed(context, '/homeadmin');
-          } else if (role == 'user') {
+          } else if (role == 'ผู้ใช้งานทั่วไป') {
             Navigator.pushReplacementNamed(context, '/homeuser');
           } else {
             ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text('Unknown role: $role')),
+              SnackBar(content: Text('ตำแหน่งไม่ถูกต้อง: $role')),
             );
           }
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Login failed: User model is null')),
+            SnackBar(content: Text('เข้าสู่ระบบล้มเหลว: User model is null')),
           );
         }
       } catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Failed to Login: $e')),
+          SnackBar(content: Text('เข้าสู่ระบบล้มเหลว: $e')),
         );
       }
     }
@@ -64,7 +68,7 @@ class _LoginFormState extends State<LoginForm> {
             ),
             validator: (value) {
               if (value == null || value.isEmpty) {
-                return 'Please enter your username';
+                return 'กรุณากรอก Username ของคุณ';
               }
               return null;
             },
@@ -79,7 +83,7 @@ class _LoginFormState extends State<LoginForm> {
             obscureText: true,
             validator: (value) {
               if (value == null || value.isEmpty) {
-                return 'Please enter your password';
+                return 'กรุณากรอก Password ของคุณ';
               }
               return null;
             },
@@ -87,7 +91,12 @@ class _LoginFormState extends State<LoginForm> {
           const SizedBox(height: 24.0),
           ElevatedButton(
             onPressed: _login,
-            child: const Text('Login'),
+            child: const Text(
+              'เข้าสู่ระบบ',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+              ),
+            ),
           ),
         ],
       ),

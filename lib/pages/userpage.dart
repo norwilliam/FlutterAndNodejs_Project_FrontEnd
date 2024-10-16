@@ -4,6 +4,7 @@ import 'package:flutter_lab1/controller/report_service.dart';
 import 'package:flutter_lab1/providers/user_providers.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_lab1/models/report_model.dart';
+import 'package:flutter_lab1/pages/addpage.dart';
 
 class UserWelcomePage extends StatefulWidget {
   const UserWelcomePage({super.key});
@@ -44,7 +45,7 @@ class _UserWelcomePage extends State<UserWelcomePage> {
       backgroundColor: const Color.fromARGB(255, 255, 255, 255),
       appBar: AppBar(
         title: Text(
-          "User Page",
+          "ระบบแจ้งซ่อม 📄",
           style: TextStyle(color: Colors.white),
         ),
         backgroundColor: const Color.fromARGB(255, 90, 1, 255),
@@ -61,9 +62,37 @@ class _UserWelcomePage extends State<UserWelcomePage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(height: 20),
+              const SizedBox(height: 15.0),
+              Align(
+                alignment: Alignment.center,
+                child: ElevatedButton.icon(
+                  onPressed: () async {
+                    final result = await Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => AddPage()),
+                    );
+                    if (result == true) {
+                      refreshReports();
+                    }
+                  },
+                  icon: Icon(Icons.add, color: Colors.white),
+                  label: Text(
+                    'เพิ่มคำร้องแจ้งซ่อม',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold, // ทำให้ตัวหนา
+                    ),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Color.fromARGB(255, 90, 1, 255),
+                    padding:
+                        EdgeInsets.symmetric(vertical: 15.0, horizontal: 20.0),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 20.0),
               Text(
-                'Reports',
+                'รายงานคำร้องแจ้งซ่อม',
                 style: TextStyle(
                   fontSize: 28.0,
                   fontWeight: FontWeight.bold,
@@ -102,32 +131,85 @@ class _UserWelcomePage extends State<UserWelcomePage> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(
-                                  'ID: ${reports[index].id}',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 20,
-                                  ),
-                                ),
                                 SizedBox(height: 5),
                                 Text(
-                                  'title: ${reports[index].title}',
+                                  'หัวข้อ: ${reports[index].title}',
                                   style: TextStyle(fontSize: 18),
                                 ),
                                 SizedBox(height: 5),
                                 Text(
-                                  'details: ${reports[index].details}',
+                                  'รายละเอียด: ${reports[index].details}',
                                   style: TextStyle(fontSize: 18),
                                 ),
                                 SizedBox(height: 5),
                                 Text(
-                                  'location: ${reports[index].location}',
+                                  'สถานที่: ${reports[index].location}',
                                   style: TextStyle(fontSize: 18),
                                 ),
                                 SizedBox(height: 5),
                                 Text(
-                                  'status: ${reports[index].status}',
+                                  'สถานะ: ${reports[index].status}',
                                   style: TextStyle(fontSize: 18),
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: <Widget>[
+                                    IconButton(
+                                      icon:
+                                          Icon(Icons.delete, color: Colors.red),
+                                      onPressed: () {
+                                        showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return AlertDialog(
+                                              title: Text("ลบคำร้องแจ้งซ่อม"),
+                                              content: Text(
+                                                  "การดำเนินการนี้ไม่สามารถย้อนกลับได้"),
+                                              actions: <Widget>[
+                                                TextButton(
+                                                  child: Text("ยกเลิก"),
+                                                  onPressed: () {
+                                                    Navigator.of(context)
+                                                        .pop(); // ปิด dialog
+                                                  },
+                                                ),
+                                                TextButton(
+                                                  child: Text("ยืนยัน"),
+                                                  onPressed: () async {
+                                                    final isDeleted =
+                                                        await ReportService()
+                                                            .deleteReport(
+                                                                context,
+                                                                reports[index]
+                                                                    .id);
+                                                    if (isDeleted) {
+                                                      refreshReports();
+                                                      ScaffoldMessenger.of(
+                                                              context)
+                                                          .showSnackBar(
+                                                        SnackBar(
+                                                            content: Text(
+                                                                'ลบคำร้องแจ้งซ่อมสำเร็จ')),
+                                                      );
+                                                    } else {
+                                                      ScaffoldMessenger.of(
+                                                              context)
+                                                          .showSnackBar(
+                                                        SnackBar(
+                                                            content: Text(
+                                                                'ลบคำร้องแจ้งซ่อมล้มเหลว')),
+                                                      );
+                                                    }
+                                                    Navigator.of(context).pop();
+                                                  },
+                                                ),
+                                              ],
+                                            );
+                                          },
+                                        );
+                                      },
+                                    ),
+                                  ],
                                 ),
                               ],
                             ),

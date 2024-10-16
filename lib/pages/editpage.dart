@@ -43,7 +43,7 @@ class _EditPageState extends State<EditPage> {
         Navigator.pop(context, true);
       } else {
         ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text('Failed to update report.')));
+            .showSnackBar(SnackBar(content: Text('แก้ไขรายงานไม่สำเร็จ')));
       }
     }
   }
@@ -51,15 +51,13 @@ class _EditPageState extends State<EditPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color.fromARGB(255, 255, 255, 255),
       appBar: AppBar(
-        title: Text("Edit report"),
+        title: Text(
+          "แก้ไขสถานะคำร้องแจ้งซ่อม",
+          style: TextStyle(color: Colors.white),
+        ),
         backgroundColor: const Color.fromARGB(255, 90, 1, 255),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.save),
-            onPressed: _updateReport,
-          ),
-        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -71,54 +69,46 @@ class _EditPageState extends State<EditPage> {
               TextFormField(
                 initialValue: title,
                 decoration: InputDecoration(
-                  labelText: "title",
+                  labelText: "หัวข้อ",
                   border: OutlineInputBorder(),
                   filled: true,
-                  fillColor: Colors.white,
+                  fillColor: Colors.grey[300],
                 ),
-                onChanged: (value) => title = value,
-                validator: (value) =>
-                    value!.isEmpty ? 'Please enter report name' : null,
+                readOnly: true,
               ),
               SizedBox(height: 15),
               TextFormField(
                 initialValue: details,
                 decoration: InputDecoration(
-                  labelText: "details",
+                  labelText: "รายละเอียด",
                   border: OutlineInputBorder(),
                   filled: true,
-                  fillColor: Colors.white,
+                  fillColor: Colors.grey[300],
                 ),
-                onChanged: (value) => details = value,
-                validator: (value) =>
-                    value!.isEmpty ? 'Please enter report type' : null,
+                readOnly: true,
               ),
               SizedBox(height: 15),
               TextFormField(
                 initialValue: location.toString(),
                 decoration: InputDecoration(
-                  labelText: "location",
+                  labelText: "สถานที่",
                   border: OutlineInputBorder(),
                   filled: true,
-                  fillColor: Colors.white,
+                  fillColor: Colors.grey[300],
                 ),
-                //keyboardType: TextInputType.number,
-                onChanged: (value) => location = value,
-                validator: (value) =>
-                    value!.isEmpty ? 'Please enter price' : null,
+                readOnly: true,
               ),
               SizedBox(height: 15),
               TextFormField(
                 initialValue: status,
                 decoration: InputDecoration(
-                  labelText: "status",
+                  labelText: "สถานะ",
                   border: OutlineInputBorder(),
                   filled: true,
                   fillColor: Colors.white,
                 ),
                 onChanged: (value) => status = value,
-                validator: (value) =>
-                    value!.isEmpty ? 'Please enter unit' : null,
+                validator: (value) => value!.isEmpty ? 'กรุณากรอกสถานะ' : null,
               ),
               SizedBox(height: 30),
               SizedBox(
@@ -132,7 +122,7 @@ class _EditPageState extends State<EditPage> {
                         borderRadius: BorderRadius.circular(8.0)),
                   ),
                   child: Text(
-                    "Update Report",
+                    "ยืนยันการแก้ไข",
                     style: TextStyle(color: Colors.white, fontSize: 16),
                   ),
                 ),
